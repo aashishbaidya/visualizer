@@ -3,9 +3,14 @@ import { connect } from 'react-redux'
 import { add_widget } from '../../actions'
 import _ from "lodash";
 import './style.css'
+import {bindActionCreators} from 'redux'
 
 const generateButtons = (el, createnew,) => {
-	return (<a key={el.name} className="fabbuttons" tooltip={el.text} onClick={createnew}><i className={el.icon + " fa-2x sub-fab-margin"}></i></a>);
+	var obj = { x: 2,
+	         	y: 0,
+	          	w: 2,
+	          	h: 1,}
+	return (<a key={el.name} className="fabbuttons" tooltip={el.text} onClick={() => createnew(obj)}><i className={el.icon + " fa-2x sub-fab-margin"}></i></a>);
 }
 
 const FabButtons = (props) => (	
@@ -15,10 +20,13 @@ const FabButtons = (props) => (
  	</nav>
  	)
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    add_widget: () => dispatch(add_widget()),
-  };
-};
+function mapDispatchToProps(dispatch){
+	return bindActionCreators({add_widget}, dispatch);
+}
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     add_widget: () => dispatch(add_widget),
+//   };
+// };
 
 export default connect(null, mapDispatchToProps)(FabButtons)

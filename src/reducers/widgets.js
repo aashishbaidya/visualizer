@@ -1,14 +1,39 @@
-const widgets = (state = {'widgets':[]}, action) => {
-  console.log('here', state, action);
+const widgets = (state = [], action) => {
+  
   switch (action.type) {
     case 'ADD_WIDGET':
-      var new_widget=action.obj || {};
-      new_widget['id'] = action.id;
-      new_widget['i'] = action.id.toString();
-      return {
-        ...state,
-        widgets: state.widgets.concat(new_widget)
-      }
+    return [
+      ...state,
+        {
+          id: action.id,
+          i: action.id.toString(),
+          x: (state.length * 2) % (12),
+          y: Infinity, // puts it at the bottom
+          w: action.obj.w,
+          h: action.obj.h,
+      
+        }
+      ]
+    case 'UPDATE_WIDGET_LAYOUT':
+      
+      console.log(action);
+      
+      action.layout_obj.forEach(function (value) {
+
+      var index = state.findIndex(item => item.i === value.i);
+      
+      if (index > 0){
+        state[index]['h'] = value['h'];
+        state[index]['w'] = value['w'];
+        state[index]['x'] = value['x'];
+        state[index]['y'] = value['y'];
+        // console.log(value.i, value['x'], value['y'])
+        // console.log(arr[index].i, arr[index]['x'], arr[index]['y'])
+        }
+      })
+    
+    return state
+
     case 'REMOVE_WIDGET':
       return state.filter(widget => widget.id !== action.id)
     default:
