@@ -14,13 +14,21 @@ const widgets = (state = [], action) => {
       
         }
       ]
+
+    case 'UPDATE_WIDGET':
+    
+      var index = state.findIndex(widget => widget.i === action.id); 
+      state[index]['data'] = action['data']
+    
+    return state
+
     case 'UPDATE_WIDGET_LAYOUT':
       
       console.log(action);
       
       action.layout_obj.forEach(function (value) {
 
-      var index = state.findIndex(item => item.i === value.i);
+      var index = state.findIndex(widget => widget.i === value.i);
       
       if (index > 0){
         state[index]['h'] = value['h'];

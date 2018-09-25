@@ -6,6 +6,7 @@ import './style.css'
 import {bindActionCreators} from 'redux'
 
 const generateButtons = (el, createnew,) => {
+	
 	var obj = { x: 2,
 	         	y: 0,
 	          	w: 2,
@@ -14,7 +15,7 @@ const generateButtons = (el, createnew,) => {
 }
 
 const FabButtons = (props) => (	
-	<nav className="container"  >
+	<nav className="fabcontainer"  >
       {	_.map(props.buttons, el => generateButtons(el, props.add_widget))}
  		<a className="fabbuttons"><i className="fas fa-2x fa-plus fab-margin"></i></a>
  	</nav>

@@ -1,4 +1,4 @@
-.container {
+.fabcontainer {
   bottom: 0;
   position: fixed;
   margin: 1em;
@@ -21,7 +21,7 @@
   border-radius: 50%;
   display: block;
   background-color: #00628e;
-  color: white;
+  color: white !important;
   width: 70px;
   height: 70px;
   margin: 20px auto 0;
@@ -47,7 +47,7 @@
           transform: translateY(50px);
 }
 
-.container:hover 
+.fabcontainer:hover 
 .fabbuttons:not(:last-child) {
   opacity: 1;
   -webkit-transform: none;
