@@ -4,8 +4,8 @@ import { WidthProvider, Responsive } from "react-grid-layout";
 import _ from "lodash";
 import FabButtons from "../components/fabButtons/app"
 import {bindActionCreators} from 'redux'
-import { remove_widget, update_widget_layout } from '../actions'
-import EditModal from '../components/EditCharts/app'
+import { remove_widget, update_widget_layout, update_forms } from '../actions'
+import EditModal from '../components/EditCharts'
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class EditDashboardContents extends React.Component {
@@ -26,6 +26,23 @@ class EditDashboardContents extends React.Component {
     };
     this.edit_Widget = this.edit_Widget.bind(this);
     this.edit_Finish = this.edit_Finish.bind(this);
+  }
+
+  componentDidMount(){
+     fetch("https:app.fieldsight.org/fieldsight/api/project/forms/137/", {
+      method: 'GET',
+      credentials: 'include'
+      })
+    .then(res => res.json())
+    .then(
+      (result) => {
+          const form_options = this.state.forms.concat(result);
+     
+      },
+      (error) => {
+     
+      }
+    )
   }
 
   createWidget(el, remove_widget) {
@@ -72,7 +89,6 @@ class EditDashboardContents extends React.Component {
             <EditModal visible={this.state.is_editing} edit_widget={this.state.edit_widget} edit_Finish={this.edit_Finish}/>
           </div>
         );
-    
   }
 }
 
@@ -83,7 +99,7 @@ const mapStateToProps = (state) => {
 };
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({update_widget_layout}, dispatch);
+  return bindActionCreators({update_widget_layout, update_forms}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditDashboardContents);

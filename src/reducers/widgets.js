@@ -2,25 +2,51 @@ const widgets = (state = [], action) => {
   
   switch (action.type) {
     case 'ADD_WIDGET':
-    return [
-      ...state,
-        {
-          id: action.id,
-          i: action.id.toString(),
-          x: (state.length * 2) % (12),
-          y: Infinity, // puts it at the bottom
-          w: action.obj.w,
-          h: action.obj.h,
-      
-        }
-      ]
+      const data = {chart_id: null, 
+                  form_id:null,
+                  question_id:null,
+                  }
+      return [
+        ...state,
+          {
+            id: action.id,
+            i: action.id.toString(),
+            x: (state.length * 2) % (12),
+            y: Infinity, // puts it at the bottom
+            w: action.obj.w,
+            h: action.obj.h,
+            data: data,  
+            type_id: 1,
+          }
+        ]
 
     case 'UPDATE_WIDGET':
     
       var index = state.findIndex(widget => widget.i === action.id); 
       state[index]['data'] = action['data']
     
-    return state
+      return state
+
+    case 'UPDATE_WIDGET_CHART':
+    
+      var index = state.findIndex(widget => widget.i === action.id); 
+      state[index]['data']['chart_id'] = action['chart_id']
+    
+      return state
+
+    case 'UPDATE_WIDGET_FORM':
+    
+      var index = state.findIndex(widget => widget.i === action.id); 
+      state[index]['data']['form_id'] = action['form_id']
+    
+      return state
+
+    case 'UPDATE_WIDGET_QUESTION':
+    
+      var index = state.findIndex(widget => widget.i === action.id); 
+      state[index]['data']['question_id'] = action['question_id']
+    
+      return state
 
     case 'UPDATE_WIDGET_LAYOUT':
       
@@ -39,8 +65,8 @@ const widgets = (state = [], action) => {
         // console.log(arr[index].i, arr[index]['x'], arr[index]['y'])
         }
       })
-    
-    return state
+
+      return state
 
     case 'REMOVE_WIDGET':
       return state.filter(widget => widget.id !== action.id)
