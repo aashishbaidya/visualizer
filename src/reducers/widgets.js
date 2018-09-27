@@ -4,7 +4,7 @@ const widgets = (state = [], action) => {
     case 'ADD_WIDGET':
       const data = {chart_id: null, 
                   form_id:null,
-                  question_id:null,
+                  question_name:null,
                   }
       return [
         ...state,
@@ -22,50 +22,57 @@ const widgets = (state = [], action) => {
 
     case 'UPDATE_WIDGET':
     
-      var index = state.findIndex(widget => widget.i === action.id); 
-      state[index]['data'] = action['data']
-    
+      var index = state.findIndex(widget => widget.id === action.id); 
+      if (index > -1){
+        state[index]['data'] = action['data']
+      }
       return state
 
     case 'UPDATE_WIDGET_CHART':
-    
-      var index = state.findIndex(widget => widget.i === action.id); 
-      state[index]['data']['chart_id'] = action['chart_id']
-    
-      return state
+      
+      var index = state.findIndex(widget => widget.id === action.id); 
+      if (index > -1){
+        state[index]['data']['chart_id'] = action['chart_id']
+        
+      }
+      return state.filter(widget => widget.id !== -1)
 
     case 'UPDATE_WIDGET_FORM':
     
-      var index = state.findIndex(widget => widget.i === action.id); 
-      state[index]['data']['form_id'] = action['form_id']
-    
-      return state
+      var index = state.findIndex(widget => widget.id === action.id); 
+      if (index > -1){
+        state[index]['data']['form_id'] = action['form_id']
+      console.log(state);
+      }
+      return state.filter(widget => widget.id !== -1)
 
-    case 'UPDATE_WIDGET_QUESTION':
+    case 'UPDATE_WIDGET_FORM_QUESTION':
     
-      var index = state.findIndex(widget => widget.i === action.id); 
-      state[index]['data']['question_id'] = action['question_id']
-    
+      var index = state.findIndex(widget => widget.id === action.id); 
+      if (index > -1){
+        state[index]['data']['form_question_name'] = action['form_question_name']
+      }
       return state
 
     case 'UPDATE_WIDGET_LAYOUT':
       
       console.log(action);
-      
+      var arr = state
       action.layout_obj.forEach(function (value) {
-
-      var index = state.findIndex(widget => widget.i === value.i);
       
-      if (index > 0){
-        state[index]['h'] = value['h'];
-        state[index]['w'] = value['w'];
-        state[index]['x'] = value['x'];
-        state[index]['y'] = value['y'];
+      var index = arr.findIndex(widget => widget.i === value.i);
+      
+      if (index > -1){
+        arr[index]['h'] = value['h'];
+        arr[index]['w'] = value['w'];
+        arr[index]['x'] = value['x'];
+        arr[index]['y'] = value['y'];
         // console.log(value.i, value['x'], value['y'])
         // console.log(arr[index].i, arr[index]['x'], arr[index]['y'])
         }
       })
-
+      state = []
+      state = arr
       return state
 
     case 'REMOVE_WIDGET':

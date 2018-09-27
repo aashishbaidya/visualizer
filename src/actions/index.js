@@ -26,9 +26,9 @@ export const update_widget_form = (id, form_id) => ({
 }
 )
 
-export const update_widget_question = (id, question_id) => ({
-  type: 'UPDATE_WIDGET_QUESTION',
-  question_id,
+export const update_widget_form_question = (id, form_question_name) => ({
+  type: 'UPDATE_WIDGET_FORM_QUESTION',
+  form_question_name,
   id
 }
 )
@@ -37,9 +37,36 @@ export const remove_widget = (id) => ({
   id
 })
 
+const filterForms = (rawForms) => {
+    var allforms = []
+    const parseChildren = (child, key) =>{
+      
+      child.children.forEach(function (subChild, index) {
+        
+        if (subChild.type === "group"){
+          parseChildren(subChild, key)
+        }
+        else if (subChild.type === "select one" || child.type === "select all that apply"){
+          
+          allforms[key].questions.push(subChild)
+        }
+      });  
+    }
+    const parseForms = (forms) =>{
+      forms.forEach(function (form, index) {
+          var parsedForm={id:form.id, name:form.name, questions:[]}
+          allforms.push(parsedForm)
+          parseChildren(form.json, index) 
+      });  
+    }
+    parseForms(rawForms)
+    console.log(allforms)
+    return allforms
+  }
+
 export const update_forms = (forms) => ({
   type: 'UPDATE_FORMS',
-  forms,
+  forms: filterForms(forms),
 }
 )
 

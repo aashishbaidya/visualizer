@@ -29,15 +29,14 @@ class EditDashboardContents extends React.Component {
   }
 
   componentDidMount(){
-     fetch("https:app.fieldsight.org/fieldsight/api/project/forms/137/", {
+     fetch("https:app.fieldsight.org/fieldsight/api/project/forms/125/", {
       method: 'GET',
       credentials: 'include'
       })
     .then(res => res.json())
     .then(
       (result) => {
-          const form_options = this.state.forms.concat(result);
-     
+          this.props.update_forms(result)
       },
       (error) => {
      
@@ -77,13 +76,13 @@ class EditDashboardContents extends React.Component {
   }
 
   render() {    
-      
+      console.log("rendered");
       return (
           <div>
             <ResponsiveReactGridLayout
               onDragStop = {this.props.update_widget_layout}
               onResizeStop = {this.props.update_widget_layout}>
-            {_.map(this.props.widgets, el => this.createWidget(el, this.props.remove_widget))} 
+              {_.map(this.props.widgets, el => this.createWidget(el, this.props.remove_widget))} 
             </ResponsiveReactGridLayout>
             <FabButtons buttons={this.state.fabbuttons} createnew={this.onAddItem}/>
             <EditModal visible={this.state.is_editing} edit_widget={this.state.edit_widget} edit_Finish={this.edit_Finish}/>
