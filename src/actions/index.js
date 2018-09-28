@@ -39,15 +39,15 @@ export const remove_widget = (id) => ({
 
 const filterForms = (rawForms) => {
     var allforms = []
-    const parseChildren = (child, key) =>{
+    const parseChildren = (child, key, prefix="") =>{
       
       child.children.forEach(function (subChild, index) {
         
         if (subChild.type === "group"){
-          parseChildren(subChild, key)
+          parseChildren(subChild, key, subChild.name + "/")
         }
         else if (subChild.type === "select one" || child.type === "select all that apply"){
-          
+          subChild.name = prefix + subChild.name
           allforms[key].questions.push(subChild)
         }
       });  

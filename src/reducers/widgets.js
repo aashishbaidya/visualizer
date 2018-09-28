@@ -52,7 +52,7 @@ const widgets = (state = [], action) => {
       if (index > -1){
         state[index]['data']['form_question_name'] = action['form_question_name']
       }
-      return state
+      return state.filter(widget => widget.id !== -1)
 
     case 'UPDATE_WIDGET_LAYOUT':
       
