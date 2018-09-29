@@ -8,13 +8,10 @@ const Dashboard =()=>(
       <div>
 
         <h1>Dashboadrd</h1>
-        <BrowserRouter>
           <div>
-          <Link to='/'>Home</Link>
-          <Link to='/edit'>Edit</Link>
-          <Link to='/stuff'>Stuff</Link>
+            <Link to='/:id'>Home</Link>
+            <Link to='/edit/:id'>Edit</Link>
           </div>
-        </BrowserRouter>
       </div>
     
   

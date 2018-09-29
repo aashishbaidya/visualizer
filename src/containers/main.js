@@ -14,9 +14,9 @@ const Main = () => (
   <div>
   <BrowserRouter>
     <Switch>
-      <Route exact path='/' component={Dashboard}/>
-      <Route path='/edit' component={EditDashboardContents}/>
-      <Route path='/stuff' component={Stuff}/>
+      <Route exact path='/:id/' component={Dashboard}/>
+      <Route exact path='/edit/:id/' component={EditDashboardContents}/>
+      <Route component={Stuff}/>
     </Switch>
    </BrowserRouter>
   </div>

@@ -6,6 +6,8 @@ import FabButtons from "../components/fabButtons/app"
 import {bindActionCreators} from 'redux'
 import { remove_widget, update_widget_layout, update_forms } from '../actions'
 import EditModal from '../components/EditCharts'
+import WidgetComponent from '../components/widget'
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class EditDashboardContents extends React.Component {
@@ -29,7 +31,28 @@ class EditDashboardContents extends React.Component {
   }
 
   componentDidMount(){
-     fetch("https:app.fieldsight.org/fieldsight/api/project/forms/137/", {
+    const {id} = this.props.match.params
+    this.setState({dashboard_id: id})
+
+    fetch("https:app.fieldsight.org/fieldsight/api/project/reportdashboard/"+ id +"/", {
+      method: 'GET',
+      credentials: 'include'
+      })
+    .then(res => res.json())
+    .then(
+      (result) => {
+          this.setState({project_id: result.project_id})
+          this.props.update_widgets(result.widgets)
+          this.fetchForms()
+      },
+      (error) => {
+        
+      }
+    )
+  }
+
+  fetchForms(){
+    fetch("https:app.fieldsight.org/fieldsight/api/project/forms/"+ this.state.project_id +"/", {
       method: 'GET',
       credentials: 'include'
       })
@@ -43,7 +66,6 @@ class EditDashboardContents extends React.Component {
       }
     )
   }
-
   createWidget(el, remove_widget) {
     const removeStyle = {
       position: "absolute",
@@ -53,7 +75,7 @@ class EditDashboardContents extends React.Component {
     };
     const i = el.add ? "+" : el.i;
     return (
-      <div key={i} data-grid={el}>
+      <div key={i + 'l'} data-grid={el}>
         
           <span className="text">{i}</span>
           <span
@@ -62,7 +84,9 @@ class EditDashboardContents extends React.Component {
           onClick={() => this.edit_Widget(el)}
           >
           <li className="far fa-edit fa-lg"></li>
+          
         </span>
+        <WidgetComponent/>
       </div>
     );
   }

@@ -26,7 +26,7 @@ const widgets = (state = [], action) => {
       if (index > -1){
         state[index]['data'] = action['data']
       }
-      return state
+      return state.filter(widget => widget.id !== -1)
 
     case 'UPDATE_WIDGET_CHART':
       
