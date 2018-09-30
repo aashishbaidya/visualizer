@@ -9,8 +9,8 @@ const generateButtons = (el, createnew,) => {
 	
 	var obj = { x: 2,
 	         	y: 0,
-	          	w: 2,
-	          	h: 1,}
+	          	w: 4,
+	          	h: 2,}
 	return (<a key={el.name} className="fabbuttons" tooltip={el.text} onClick={() => createnew(obj)}><i className={el.icon + " fa-2x sub-fab-margin"}></i></a>);
 }
 

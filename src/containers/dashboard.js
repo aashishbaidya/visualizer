@@ -1,7 +1,5 @@
 import React from "react";
-import { WidthProvider, Responsive } from "react-grid-layout";
-import _ from "lodash";
-import { Link, BrowserRouter, Router } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Dashboard =()=>(
     
@@ -9,14 +7,13 @@ const Dashboard =()=>(
 
         <h1>Dashboadrd</h1>
           <div>
-            <Link to='/:id'>Home</Link>
-            <Link to='/edit/:id'>Edit</Link>
+            <Link to='/'>Home</Link>
+            <Link to='/edit'>Edit</Link>
+            <Link to='/stuff'>Stuff</Link>
           </div>
       </div>
     
   
 )
-
-
 export default Dashboard;
 

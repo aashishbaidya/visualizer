@@ -6,19 +6,17 @@ const widgets = (state = [], action) => {
                   form_id:null,
                   question_name:null,
                   }
-      return [
-        ...state,
-          {
-            id: action.id,
-            i: action.id.toString(),
-            x: (state.length * 2) % (12),
-            y: Infinity, // puts it at the bottom
-            w: action.obj.w,
-            h: action.obj.h,
-            data: data,  
-            type_id: 1,
-          }
-        ]
+                  state.push({
+                    id: action.id,
+                    i: action.id.toString(),
+                    x: (state.length * 4) % (12),
+                    y: Infinity, // puts it at the bottom
+                    w: action.obj.w,
+                    h: action.obj.h,
+                    data: data,  
+                    type_id: 1,
+                  })
+      return state.concat([])
 
     case 'UPDATE_WIDGET':
     
@@ -30,7 +28,7 @@ const widgets = (state = [], action) => {
 
     case 'UPDATE_WIDGET_CHART':
       
-      var index = state.findIndex(widget => widget.id === action.id); 
+      index = state.findIndex(widget => widget.id === action.id); 
       if (index > -1){
         state[index]['data']['chart_id'] = action['chart_id']
         
@@ -39,7 +37,7 @@ const widgets = (state = [], action) => {
 
     case 'UPDATE_WIDGET_FORM':
     
-      var index = state.findIndex(widget => widget.id === action.id); 
+      index = state.findIndex(widget => widget.id === action.id); 
       if (index > -1){
         state[index]['data']['form_id'] = action['form_id']
       console.log(state);
@@ -48,7 +46,7 @@ const widgets = (state = [], action) => {
 
     case 'UPDATE_WIDGET_FORM_QUESTION':
     
-      var index = state.findIndex(widget => widget.id === action.id); 
+      index = state.findIndex(widget => widget.id === action.id); 
       if (index > -1){
         state[index]['data']['form_question_name'] = action['form_question_name']
       }
@@ -73,7 +71,7 @@ const widgets = (state = [], action) => {
       })
       state = []
       state = arr
-      return state
+      return state.filter(widget => widget.id !== action.id)
 
     case 'REMOVE_WIDGET':
       return state.filter(widget => widget.id !== action.id)

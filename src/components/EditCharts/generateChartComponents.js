@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import Select from '../select'
 import {bindActionCreators} from 'redux'
 import { update_widget_chart, update_widget_form, update_widget_form_question } from '../../actions'
+
 class GenerateChartComponents extends React.Component {
   
 

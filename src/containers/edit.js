@@ -4,7 +4,7 @@ import { WidthProvider, Responsive } from "react-grid-layout";
 import _ from "lodash";
 import FabButtons from "../components/fabButtons/app"
 import {bindActionCreators} from 'redux'
-import { remove_widget, update_widget_layout, update_forms } from '../actions'
+import { update_widget_layout, update_forms } from '../actions'
 import EditModal from '../components/EditCharts'
 import WidgetComponent from '../components/widget'
 
@@ -73,11 +73,11 @@ class EditDashboardContents extends React.Component {
       top: "6px",
       cursor: "pointer"
     };
-    const i = el.add ? "+" : el.i;
+    const i = el.i;
     return (
       <div key={i + 'l'} data-grid={el}>
         
-          <span className="text">{i}</span>
+          
           <span
           className="remove"
           style={removeStyle}
@@ -86,7 +86,7 @@ class EditDashboardContents extends React.Component {
           <li className="far fa-edit fa-lg"></li>
           
         </span>
-        <WidgetComponent/>
+        <WidgetComponent i={i}/>
       </div>
     );
   }
@@ -103,11 +103,6 @@ class EditDashboardContents extends React.Component {
       console.log("rendered");
       return (
           <div>
-            <ResponsiveReactGridLayout
-              onDragStop = {this.props.update_widget_layout}
-              onResizeStop = {this.props.update_widget_layout}>
-              {_.map(this.props.widgets, el => this.createWidget(el, this.props.remove_widget))} 
-            </ResponsiveReactGridLayout>
             <FabButtons buttons={this.state.fabbuttons} createnew={this.onAddItem}/>
             <EditModal visible={this.state.is_editing} edit_widget={this.state.edit_widget} edit_Finish={this.edit_Finish}/>
           </div>

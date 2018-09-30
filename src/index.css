@@ -10,7 +10,7 @@ body {
 .react-grid-item {
   transition: all 200ms ease;
   transition-property: left, top;
-  background: grey;
+  background: rgb(219, 207, 207);
 }
 .react-grid-item.cssTransforms {
   transition-property: transform;
