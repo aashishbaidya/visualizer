@@ -66,7 +66,7 @@ class EditDashboardContents extends React.Component {
       }
     )
   }
-  createWidget(el, remove_widget) {
+  createWidget(el, index, remove_widget) {
     const removeStyle = {
       position: "absolute",
       right: "6px",
@@ -74,19 +74,17 @@ class EditDashboardContents extends React.Component {
       cursor: "pointer"
     };
     const i = el.i;
+
     return (
-      <div key={i + 'l'} data-grid={el}>
-        
-          
+      <div key={index} data-grid={el}>
+        <WidgetComponent i={index} widget={el}/>
           <span
-          className="remove"
-          style={removeStyle}
-          onClick={() => this.edit_Widget(el)}
-          >
-          <li className="far fa-edit fa-lg"></li>
-          
-        </span>
-        <WidgetComponent i={i}/>
+            className="remove"
+            style={removeStyle}
+            onClick={() => this.edit_Widget(el)}
+            >
+            <li className="far fa-edit fa-lg"></li>
+          </span>
       </div>
     );
   }
@@ -101,8 +99,14 @@ class EditDashboardContents extends React.Component {
 
   render() {    
       console.log("rendered");
+      
       return (
           <div>
+            <ResponsiveReactGridLayout
+              onDragStop = {this.props.update_widget_layout}
+              onResizeStop = {this.props.update_widget_layout}>
+              {this.props.widget.map(el, index => this.createWidget(el, index, this.props.remove_widget))} 
+            </ResponsiveReactGridLayout>
             <FabButtons buttons={this.state.fabbuttons} createnew={this.onAddItem}/>
             <EditModal visible={this.state.is_editing} edit_widget={this.state.edit_widget} edit_Finish={this.edit_Finish}/>
           </div>
