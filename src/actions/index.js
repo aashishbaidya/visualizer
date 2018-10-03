@@ -1,7 +1,11 @@
-let nextWidgetId = 0
+export const add_initial_widgets = (obj) => ({
+  type: 'ADD_INITIAL_WIDGETS',
+  obj,
+}
+)
+
 export const add_widget = (obj) => ({
   type: 'ADD_WIDGET',
-  id: nextWidgetId++,
   obj,
 }
 )

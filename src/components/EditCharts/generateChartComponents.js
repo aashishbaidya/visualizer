@@ -20,16 +20,16 @@ class GenerateChartComponents extends React.Component {
   
 
   update_Widget_Chart(event){
-  	console.log(event.target.value, this.props.widgets);
-    this.props.update_widget_chart(this.props.widget.id, event.target.value)
+  	console.log(event.target.value, "uhuhuh", this.props.el_index, this.props.widgets);
+    this.props.update_widget_chart(this.props.el_index, event.target.value)
   }
 
   update_Widget_Form(event){
-  	this.props.update_widget_form(this.props.widget.id, event.target.value)
+  	this.props.update_widget_form(this.props.el_index, event.target.value)
   }
 
   update_Widget_Form_Question(event){
-    this.props.update_widget_form_question(this.props.widget.id, event.target.value)
+    this.props.update_widget_form_question(this.props.el_index, event.target.value)
   }
 
   remove_Finish(){

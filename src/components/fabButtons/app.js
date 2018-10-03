@@ -18,9 +18,9 @@ const FabButtons = (props) => (
 	<div><nav className="fabcontainer"  >
       {	_.map(props.buttons, el => generateButtons(el, props.add_widget))}
  		<a className="fabbuttons"><i className="fas fa-2x fa-plus fab-margin"></i></a>
-		 
+		 {console.log(props)}
  	</nav>
-	<nav className="save"><a className="fabbuttons" tooltip="Save"><i className="fas fa-2x fa-save fab-margin"></i></a></nav>
+	<nav className="save"><a className="fabbuttons" tooltip="Save" onClick={() => props.remoteSave()}><i className="fas fa-2x fa-save fab-margin"></i></a></nav>
 	</div>
 	 )
 

@@ -3,10 +3,10 @@ import Button from 'react-bootstrap/lib/Button';
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import Modal from 'react-bootstrap/lib/Modal';
 import GenerateChartComponents from './generateChartComponents';
-const edit_widget = (widget) => {
+const edit_widget = (widget, el_index) => {
 	switch (widget.type_id){
 		case 1:
-		const content = <GenerateChartComponents widget={widget} />
+		const content = <GenerateChartComponents widget={widget} el_index={el_index} />
 		return content
 		
 		default:
@@ -30,7 +30,7 @@ const EditModal = (props) => (
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {edit_widget(props.edit_widget)}
+            {edit_widget(props.edit_widget, props.el_index)}
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={props.edit_Finish}>Done</Button>

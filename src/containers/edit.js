@@ -4,7 +4,7 @@ import { WidthProvider, Responsive } from "react-grid-layout";
 import _ from "lodash";
 import FabButtons from "../components/fabButtons/app"
 import {bindActionCreators} from 'redux'
-import { update_widget_layout, update_forms } from '../actions'
+import { add_initial_widgets, update_widget_layout, update_forms } from '../actions'
 import EditModal from '../components/EditCharts'
 import WidgetComponent from '../components/widget'
 
@@ -23,9 +23,11 @@ class EditDashboardContents extends React.Component {
       fabbuttons: [{name:'pie', text:'Charts', icon:'fas fa-chart-pie'}, {name:'Chart', text:'Image', icon:'far fa-image'}],
       is_editing: false,
       edit_widget: {},
+      el_index: -1,
 
 
     };
+    this.remoteSaveWidgets = this.remoteSaveWidgets.bind(this);
     this.edit_Widget = this.edit_Widget.bind(this);
     this.edit_Finish = this.edit_Finish.bind(this);
   }
@@ -34,38 +36,97 @@ class EditDashboardContents extends React.Component {
     const {id} = this.props.match.params
     this.setState({dashboard_id: id})
 
-    fetch("https:app.fieldsight.org/fieldsight/api/project/reportdashboard/"+ id +"/", {
+    fetch("http://localhost:8001/report/api/dashboard-data/"+ id +"/", {
       method: 'GET',
       credentials: 'include'
       })
-    .then(res => res.json())
+    .then(res => {console.log(res)
+      if(res.status == 403)
+      {
+        alert('Please Login')
+      }
+      else if(res.status == 200){
+        return res.json()
+      }
+      else{
+        alert('Error Occured. Contact Admin.')
+      }
+      })
+
     .then(
       (result) => {
-          this.setState({project_id: result.project_id})
-          this.props.update_widgets(result.widgets)
+        console.log(result);  
+          this.props.add_initial_widgets(result.dashboardData)
+          
+          
+          this.setState({project_id: result.project})
           this.fetchForms()
-      },
+        },
       (error) => {
+        console.log(error)
         
       }
     )
   }
 
   fetchForms(){
-    fetch("https:app.fieldsight.org/fieldsight/api/project/forms/"+ this.state.project_id +"/", {
-      method: 'GET',
-      credentials: 'include'
+    // fetch("https:app.fieldsight.org/fieldsight/api/project/forms/"+ this.state.project_id +"/", {
+    //   method: 'GET',
+    //   credentials: 'include'
+    //   })
+    // .then(res => res.json())
+    // .then(
+    //   (result) => {
+    //       this.props.update_forms(result)
+    //   },
+    //   (error) => {
+     
+    //   }
+    // )
+  }
+
+  fetchDatas(){
+    // this.props.widgets.forEach(function (widget, index) {
+    //   fetch("https:app.fieldsight.org/fieldsight/api/project/forms/"+ this.state.project_id +"/", {
+    //     method: 'GET',
+    //     credentials: 'include'
+    //     })
+    //   .then(res => res.json())
+    //   .then(
+    //     (result) => {
+    //         this.props.update_forms(result)
+    //     },
+    //     (error) => {
+      
+    //     }
+    //   )
+    // })
+  }
+
+  remoteSaveWidgets(){
+    console.log("hereee")
+    fetch("http://localhost:8001/report/api/dashboard-data/"+ this.state.dashboard_id +"/", {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        "dashboardData":JSON.stringify(this.props.widgets)
+        })
       })
     .then(res => res.json())
     .then(
       (result) => {
-          this.props.update_forms(result)
+          console.log('successfully this.remoteSaveWidgets.')
       },
       (error) => {
-     
+    
       }
     )
+  
   }
+  
   createWidget(el, index, remove_widget) {
     const removeStyle = {
       position: "absolute",
@@ -73,7 +134,6 @@ class EditDashboardContents extends React.Component {
       top: "6px",
       cursor: "pointer"
     };
-    const i = el.i;
 
     return (
       <div key={index} data-grid={el}>
@@ -81,7 +141,7 @@ class EditDashboardContents extends React.Component {
           <span
             className="remove"
             style={removeStyle}
-            onClick={() => this.edit_Widget(el)}
+            onClick={() => this.edit_Widget(el, index)}
             >
             <li className="far fa-edit fa-lg"></li>
           </span>
@@ -89,12 +149,12 @@ class EditDashboardContents extends React.Component {
     );
   }
 // onClick={() => remove_widget(el.id)}
-  edit_Widget(el, save_widget){
-    this.setState({is_editing: true, edit_widget: el})
+  edit_Widget(el, index){
+    this.setState({is_editing: true, el_index:index, edit_widget: el})
   }
 
   edit_Finish(){
-    this.setState({is_editing: false, edit_widget:{}})
+    this.setState({is_editing: false, edit_widget:{}, el_index:-1})
   }
 
   render() {    
@@ -105,10 +165,10 @@ class EditDashboardContents extends React.Component {
             <ResponsiveReactGridLayout
               onDragStop = {this.props.update_widget_layout}
               onResizeStop = {this.props.update_widget_layout}>
-              {this.props.widget.map(el, index => this.createWidget(el, index, this.props.remove_widget))} 
+              {this.props.widgets.map((el, index) => this.createWidget(el, index, this.props.remove_widget))} 
             </ResponsiveReactGridLayout>
-            <FabButtons buttons={this.state.fabbuttons} createnew={this.onAddItem}/>
-            <EditModal visible={this.state.is_editing} edit_widget={this.state.edit_widget} edit_Finish={this.edit_Finish}/>
+            <FabButtons buttons={this.state.fabbuttons} remoteSave={this.remoteSaveWidgets}/>
+            <EditModal visible={this.state.is_editing} edit_widget={this.state.edit_widget} el_index={this.state.el_index} edit_Finish={this.edit_Finish}/>
           </div>
         );
   }
@@ -121,7 +181,7 @@ const mapStateToProps = (state) => {
 };
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({update_widget_layout, update_forms}, dispatch);
+  return bindActionCreators({add_initial_widgets, update_widget_layout, update_forms}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditDashboardContents);
