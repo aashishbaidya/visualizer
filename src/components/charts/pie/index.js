@@ -72,7 +72,7 @@ class SimplePie extends React.Component {
                     <Pie 
                     activeIndex={this.state.activeIndex}
                     activeShape={this.renderActiveShape} 
-                    data={data} 
+                    data={this.props.data} 
                     cx="50%" 
                     cy="50%" 
                     innerRadius="50%"

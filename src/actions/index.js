@@ -74,4 +74,8 @@ export const update_forms = (forms) => ({
 }
 )
 
-
+export const update_datas = (obj) => ({
+  type: 'UPDATE_DATA',
+  obj,
+}
+)

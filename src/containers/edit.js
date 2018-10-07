@@ -24,6 +24,9 @@ class EditDashboardContents extends React.Component {
       is_editing: false,
       edit_widget: {},
       el_index: -1,
+      notifications: [],
+      base_url: "http://fieldsight.naxa.com.np",
+      project_id: null
 
 
     };
@@ -36,30 +39,32 @@ class EditDashboardContents extends React.Component {
     const {id} = this.props.match.params
     this.setState({dashboard_id: id})
 
-    fetch("http://localhost:8001/report/api/dashboard-data/"+ id +"/", {
+    fetch(this.state.base_url + "/report/api/dashboard-data/"+ id +"/", {
       method: 'GET',
       credentials: 'include'
       })
     .then(res => {console.log(res)
-      if(res.status == 403)
-      {
-        alert('Please Login')
-      }
-      else if(res.status == 200){
-        return res.json()
-      }
-      else{
-        alert('Error Occured. Contact Admin.')
-      }
+      switch (res.status){
+        case 200:
+          return res.json()
+        case 404:
+          return alert("404 Error, Dashboard not found.")
+        case 403:
+          return alert('Please Login')
+        default:
+          return alert('Error Occured. Contact Admin.')
+        }
+        
       })
 
     .then(
       (result) => {
         console.log(result);  
+        this.setState({project_id: result.project})
           this.props.add_initial_widgets(result.dashboardData)
           
           
-          this.setState({project_id: result.project})
+          
           this.fetchForms()
         },
       (error) => {
@@ -70,19 +75,19 @@ class EditDashboardContents extends React.Component {
   }
 
   fetchForms(){
-    // fetch("https:app.fieldsight.org/fieldsight/api/project/forms/"+ this.state.project_id +"/", {
-    //   method: 'GET',
-    //   credentials: 'include'
-    //   })
-    // .then(res => res.json())
-    // .then(
-    //   (result) => {
-    //       this.props.update_forms(result)
-    //   },
-    //   (error) => {
+    fetch("https:app.fieldsight.org/fieldsight/api/project/forms/"+ this.state.project_id +"/", {
+      method: 'GET',
+      credentials: 'include'
+      })
+    .then(res => res.json())
+    .then(
+      (result) => {
+          this.props.update_forms(result)
+      },
+      (error) => {
      
-    //   }
-    // )
+      }
+    )
   }
 
   fetchDatas(){
@@ -105,7 +110,7 @@ class EditDashboardContents extends React.Component {
 
   remoteSaveWidgets(){
     console.log("hereee")
-    fetch("http://localhost:8001/report/api/dashboard-data/"+ this.state.dashboard_id +"/", {
+    fetch(this.state.base_url + "/report/api/dashboard-data/"+ this.state.dashboard_id +"/", {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
@@ -124,7 +129,6 @@ class EditDashboardContents extends React.Component {
     
       }
     )
-  
   }
   
   createWidget(el, index, remove_widget) {
@@ -134,10 +138,13 @@ class EditDashboardContents extends React.Component {
       top: "6px",
       cursor: "pointer"
     };
-
+    if (!el.y){
+      el.y = Infinity
+    }
     return (
+
       <div key={index} data-grid={el}>
-        <WidgetComponent i={index} widget={el}/>
+        <WidgetComponent i={index} widget={el} base_url={this.state.base_url} project_id={this.state.project_id}/>
           <span
             className="remove"
             style={removeStyle}
@@ -162,6 +169,7 @@ class EditDashboardContents extends React.Component {
       
       return (
           <div>
+            
             <ResponsiveReactGridLayout
               onDragStop = {this.props.update_widget_layout}
               onResizeStop = {this.props.update_widget_layout}>

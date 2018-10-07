@@ -5,11 +5,12 @@ const widgets = (state = [], action) => {
       console.log("here")
       state = state.concat(action.obj)
       return state.filter(widget => widget !== -1)
+      
     case 'ADD_WIDGET':
 
       const data = {chart_id: null, 
                   form_id:null,
-                  question_name:null,
+                  form_question_name:null,
                   }
                   state.push({
                     x: (state.length * 4) % (12),
