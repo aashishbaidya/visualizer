@@ -83,7 +83,6 @@ class WidgetComponent extends React.Component {
     }
 
     renderReady() {
-        
         switch (this.props.widget.data.chart_id) {
             
             case "1":
@@ -104,7 +103,7 @@ class WidgetComponent extends React.Component {
     }
 
     render() { 
-        console.log('render here');
+        console.log('render actual culprit', this.props.widget);
         if (this.state.is_loading == true)
         {
             return this.renderLoading()

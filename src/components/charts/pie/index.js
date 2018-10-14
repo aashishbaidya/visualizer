@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sector, PieChart, Pie, Cell, ResponsiveContainer} from 'recharts';
+import { Sector, PieChart, Pie, Cell, ResponsiveContainer, Legend} from 'recharts';
 
 class SimplePie extends React.Component {
   
@@ -66,6 +66,7 @@ class SimplePie extends React.Component {
         const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];   
         const data = [{name: 'Group A', value: 400}, {name: 'Group B', value: 300},
                   {name: 'Group C', value: 300}, {name: 'Group D', value: 200}];
+       
         return (
           <ResponsiveContainer width="100%" height="100%">
                 <PieChart >
@@ -84,7 +85,7 @@ class SimplePie extends React.Component {
                         data.map((entry, index) => <Cell key={index} fill={COLORS[index % COLORS.length]}/>)
                     }
                     </Pie>
-                         
+                    <Legend iconSize={10} layout='vertical' align='left' verticalAlign='middle' />  
                 </PieChart>  
                 </ResponsiveContainer>
                     

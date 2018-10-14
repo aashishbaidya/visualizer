@@ -56,23 +56,21 @@ const widgets = (state = [], action) => {
       return state.filter(widget => widget !== -1)
 
     case 'UPDATE_WIDGET_LAYOUT':
-      
-      var arr = state
+
       action.layout_obj.forEach(function (value) {
       
       var index = value.i
       
       if (index > -1){
-        arr[index]['h'] = value['h'];
-        arr[index]['w'] = value['w'];
-        arr[index]['x'] = value['x'];
-        arr[index]['y'] = value['y'];
-        // console.log(value.i, value['x'], value['y'])
+        state[index]['h'] = value['h'];
+        state[index]['w'] = value['w'];
+        state[index]['x'] = value['x'];
+        state[index]['y'] = value['y'];
+        console.log(state[index]['y'], value['y'], index)
         // console.log(arr[index].i, arr[index]['x'], arr[index]['y'])
         }
       })
-      state = []
-      state = arr
+      console.log(state);      
       return state.filter(widget => widget.x !== -1)
 
     case 'REMOVE_WIDGET':

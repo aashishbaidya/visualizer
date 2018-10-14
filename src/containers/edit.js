@@ -109,7 +109,7 @@ class EditDashboardContents extends React.Component {
   }
 
   remoteSaveWidgets(){
-    console.log("hereee")
+    console.log("hereee", this.props.widgets)
     fetch(this.state.base_url + "/report/api/dashboard-data/"+ this.state.dashboard_id +"/", {
       method: 'POST',
       headers: {
@@ -131,7 +131,9 @@ class EditDashboardContents extends React.Component {
     )
   }
   
+  
   createWidget(el, index, remove_widget) {
+    console.log("create widget");
     const removeStyle = {
       position: "absolute",
       right: "6px",
@@ -139,7 +141,7 @@ class EditDashboardContents extends React.Component {
       cursor: "pointer"
     };
     if (!el.y){
-      el.y = Infinity
+      el.y = 0
     }
     return (
 
@@ -165,7 +167,7 @@ class EditDashboardContents extends React.Component {
   }
 
   render() {    
-      console.log("rendered");
+      console.log("rendered now");
       
       return (
           <div>
